@@ -98,6 +98,9 @@ module.exports = {
     markdown: {
         toc: {
             includeLevel: [2]
+        },
+        extendMarkdown: md => {
+            md.use(require('markdown-it-footnote'))
         }
     }
 }

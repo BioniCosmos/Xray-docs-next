@@ -2,7 +2,6 @@ module.exports = {
     plugins: [
         '@vuepress/back-to-top'
     ],
-    base: '/Xray-docs-next/',
     locales: {
         '/': {
             lang: 'zh-CN',

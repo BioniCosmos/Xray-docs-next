@@ -1,15 +1,10 @@
----
-title: 使用文档
-lang: zh-CN
----
+# 改进文档
 
-## 改进文档
-
-Project X 的文档托管在[github](https://github.com/XTLS/XTLS.github.io)上.
+Project X 的文档托管在 [GitHub](https://github.com/XTLS/XTLS.github.io) 上.
 
 您可以通过以下步骤, 提交您对文档的改动:
 
-1. 从[project X 文档仓库](https://github.com/XTLS/XTLS.github.io)打开仓库, 点击右上角的 fork, fork 一份文档仓库的镜像到您自己的 github 仓库.
+1. 从 [project X 文档仓库](https://github.com/XTLS/XTLS.github.io) 打开仓库, 点击右上角的 fork, fork 一份文档仓库的镜像到您自己的 github 仓库.
 
 
 2. 使用任何您喜欢的工具, 从您克隆的仓库获得文档的克隆, 如:

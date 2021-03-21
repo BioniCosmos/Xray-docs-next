@@ -65,7 +65,7 @@
 > `tag`: string
 
 
-所有由 `bridge` 发出的连接，都会带有这个标识。可以在 [路由配置](./routing) 中使用 `inboundTag` 进行识别。
+所有由 `bridge` 发出的连接，都会带有这个标识。可以在 [路由配置](./routing.md) 中使用 `inboundTag` 进行识别。
 
 > `domain`: string
 
@@ -86,7 +86,7 @@
 > `tag`: string
 
 
-`portal` 的标识。在  [路由配置](./routing) 中使用 `outboundTag` 将流量转发到这个 `portal`。
+`portal` 的标识。在  [路由配置](./routing.md) 中使用 `outboundTag` 将流量转发到这个 `portal`。
 
 > `domain`: string
 
@@ -106,7 +106,7 @@
 
 ### bridge配置
 
-`bridge` 通常需要两个outbound，一个用于连接 `portal`，另一个用于发送实际的流量。也就是说，你需要用路由区分两种流量。
+`bridge` 通常需要两个 outbound，一个用于连接 `portal`，另一个用于发送实际的流量。也就是说，你需要用路由区分两种流量。
 
 反向代理配置:
 
@@ -179,7 +179,7 @@ outbound:
 
 ### portal配置
 
-`portal` 通常需要两个inbound，一个用于接收 `bridge` 的连接，另一个用于接收实际的流量。同时你也需要用路由区分两种流量。
+`portal` 通常需要两个 inbound，一个用于接收 `bridge` 的连接，另一个用于接收实际的流量。同时你也需要用路由区分两种流量。
 
 反向代理配置:
 

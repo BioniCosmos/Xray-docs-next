@@ -39,7 +39,7 @@ fallback 也可以将不同类型的流量根据 path 进行分流, 从而实现
 
 `fallbacks` 项是可选的，只能用于 TCP+TLS 传输组合
 
-- 该项有子元素时，[Inbound TLS](../base/transport/#tlsobject) 需设置 `"alpn":["http/1.1"]`。\*\*
+- 该项有子元素时，[Inbound TLS](../transport.md#tlsobject) 需设置 `"alpn":["http/1.1"]`。\*\*
 
 通常，你需要先设置一组 `alpn` 和 `path` 均省略或为空的默认回落，然后再按需配置其它分流。
 
@@ -56,17 +56,17 @@ VLESS 会把 TLS 解密后首包长度 < 18 或协议版本无效、身份认证
 
 有需要时，VLESS 才会尝试读取 TLS ALPN 协商结果，若成功，输出 info `realAlpn =` 到日志。
 用途：解决了 Nginx 的 h2c 服务不能同时兼容 http/1.1 的问题，Nginx 需要写两行 listen，分别用于 1.1 和 h2c。
-注意：fallbacks alpn 存在 `"h2"` 时，[Inbound TLS](../base/transport/#tlsobject) 需设置 `"alpn":["h2","http/1.1"]`，以支持 h2 访问。
+注意：fallbacks alpn 存在 `"h2"` 时，[Inbound TLS](../transport.md#tlsobject) 需设置 `"alpn":["h2","http/1.1"]`，以支持 h2 访问。
 
 ::: tip
-Fallback 内设置的 "alpn" 是匹配实际协商出的 ALPN，而 Inbound TLS 设置的 "alpn" 是握手时可选的 ALPN 列表，两者含义不同。
+Fallback 内设置的 `alpn` 是匹配实际协商出的 ALPN，而 Inbound TLS 设置的 `alpn` 是握手时可选的 ALPN 列表，两者含义不同。
 :::
 
 > `path`: string
 
-尝试匹配首包 HTTP PATH，空为任意，默认为空，非空则必须以 `"/"` 开头，不支持 h2c。
+尝试匹配首包 HTTP PATH，空为任意，默认为空，非空则必须以 `/` 开头，不支持 h2c。
 
-智能：有需要时，VLESS 才会尝试看一眼 PATH（不超过 55 个字节；最快算法，并不完整解析 HTTP），若成功，输出 info `realPath =` 到日志。
+智能：有需要时，VLESS 才会尝试看一眼 PATH（不超过 55 个字节；最快算法，并不完整解析 HTTP），若成功，输出 INFO 日志 `realPath =`。
 用途：分流其它 inbound 的 WebSocket 流量或 HTTP 伪装流量，没有多余处理、纯粹转发流量，理论性能比 Nginx 更强。
 
 注意：**fallbacks 所在入站本身必须是 TCP+TLS**，这是分流至其它 WS 入站用的，被分流的入站则无需配置 TLS。
@@ -76,7 +76,7 @@ Fallback 内设置的 "alpn" 是匹配实际协商出的 ALPN，而 Inbound TLS 
 决定 TLS 解密后 TCP 流量的去向，目前支持两类地址：（该项必填，否则无法启动）
 
 1. TCP，格式为 `"addr:port"`，其中 addr 支持 IPv4、域名、IPv6，若填写域名，也将直接发起 TCP 连接（而不走内置的 DNS）。
-2. Unix domain socket，格式为绝对路径，形如 `"/dev/shm/domain.socket"`，可在开头加 `"@"` 代表 [abstract](https://www.man7.org/linux/man-pages/man7/unix.7.html)，`"@@"` 则代表带 padding 的 abstract。
+2. Unix domain socket，格式为绝对路径，形如 `"/dev/shm/domain.socket"`，可在开头加 `@` 代表 [abstract](https://www.man7.org/linux/man-pages/man7/unix.7.html)，`@@` 则代表带 padding 的 abstract。
 
 若只填 port，数字或字符串均可，形如 `80`、`"80"`，通常指向一个明文 http 服务（addr 会被补为 `"127.0.0.1"`）。
 
@@ -97,7 +97,7 @@ Fallback 内设置的 "alpn" 是匹配实际协商出的 ALPN，而 Inbound TLS 
 - 将匹配到最精确的子元素，与子元素的排列顺序无关。若配置了几个 alpn 和 path 均相同的子元素，则会以最后的为准。
 - 回落分流均是解密后 TCP 层的转发，而不是 HTTP 层，只在必要时检查首包 PATH。
 - 您可以查看更多的关于 Fallbacks 的使用技巧和心得
-  - [Fallbacks 功能简析](../../documents/level-1/fallbacks-lv1)
+  - [Fallbacks 功能简析](../documents/level-1/fallbacks-lv1)
 
 
 ## Fallbacks 设计理论 <Badge text="WIP" type="warning"/>

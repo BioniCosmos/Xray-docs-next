@@ -158,7 +158,8 @@ TLS / XTLS 是目前最安全的传输加密方案, 且外部看来流量类型�
   "cipherSuites": "此处填写你需要的加密套件名称,每个套件名称之间用:进行分隔",
   "certificates": [],
   "disableSystemRoot": false,
-  "enableSessionResumption": false
+  "enableSessionResumption": false,
+  "fingerprint": ""
 }
 ```
 
@@ -219,6 +220,18 @@ CipherSuites 用于配置受支持的密码套件列表, 每个套件名称之�
 此参数的设置为 false 时, ClientHello 里没有 session_ticket 这个扩展。
 通常来讲 go 语言程序的 ClientHello 里并没有用到这个扩展, 因此建议保持默认值。
 默认值为 `false`。
+
+> `fingerprint` : "" | "chrome" | "firefox" | "safari" | "randomized" 
+
+此参数用于配置指定 `TLS Client Hello` 的指纹。当其值为空时，表示不启用此功能。启用后，Xray 将通过 uTLS 库 **模拟** `TLS` 指纹，或随机生成。
+
+::: tip
+此功能仅 **模拟** `TLS Client Hello` 的指纹，行为、其他指纹与 Golang 相同。如果你希望更加完整地模拟浏览器 `TLS` 指纹与行为，可以使用 [Browser Dialer](./transports/websocket.md#browser-dialer)
+:::
+
+ - `"chrome" | "firefox" | "safari"`: 模拟 Chrome / Firefox / Safari 的 TLS 指纹
+ - `"randomized"`: 使用随机指纹
+
 
 > `certificates`: \[ [CertificateObject](#certificateobject) \]
 

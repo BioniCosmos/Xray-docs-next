@@ -56,7 +56,7 @@ SNI 的原理也很简单，它通过让客户端发送主机名作为 TLS 协�
 
 创建完毕后，你会得到一串神秘字符，请将其妥善保管到安全且不会丢失的地方，因为它不再会显示。这串字符就是即将用到的 `CF_Token`。
 
-::: tip 注意
+::: warning
 以下操作需要在 root 用户下进行，使用 sudo 会出现错误。
 :::
 
@@ -91,26 +91,26 @@ acme.sh --install-cert -d example.com --fullchain-file /etc/ssl/xray/cert.pem --
           {
             "name": "example.com",
             "path": "/vmessws",
-            "dest": 5000,
+            "dest": 5000, // Xray 其他入站协议
             "xver": 1
           },
           {
-            "dest": 5001,
+            "dest": 5001, // 默认伪装站
             "xver": 1
           },
           {
             "alpn": "h2",
-            "dest": 5002,
+            "dest": 5002, // 同上，使用 HTTP/2 协议
             "xver": 1
           },
           {
             "name": "blog.example.com",
-            "dest": 5003,
+            "dest": 5003, // 其他网站，通过域名进行分流
             "xver": 1
           },
           {
             "name": "blog.example.com",
-            "alpn": "h2",
+            "alpn": "h2", // 同上，使用 HTTP/2 协议
             "dest": 5004,
             "xver": 1
           }
@@ -177,6 +177,10 @@ acme.sh --install-cert -d example.com --fullchain-file /etc/ssl/xray/cert.pem --
 
 - 有关 HTTP/2
 
+  之所以要使用 HTTP/2，是因为它可以为网站访问者带来更好的访问体验。如果你只是想做一个伪装，并不真正使用网站，那么删掉所有关于 HTTP/2 的配置也无妨。有关更多 HTTP/2 协议的细节，请访问[维基百科](https://zh.wikipedia.org/wiki/HTTP/2)。
+
+  以下是关于 HTTP/2 配置方面的细节问题。
+
   首先，`inbounds.streamSettings.xtlsSettings.alpn` 有顺序，应将 `h2` 放前，`http/1.1` 放后，在优先使用 HTTP/2 的同时保证兼容性；反过来会导致 HTTP/2 在协商时变为 HTTP/1.1，成为无效配置。
 
   在上述配置中，每条回落到 Nginx 的配置都要分成两个。这是因为 h2 是强制 TLS 加密的 HTTP/2 连接，这有益于数据在互联网中传输的安全，但在服务器内部没有必要；而 h2c 是非加密的 HTTP/2 连接，适合该环境。然而，Nginx 不能在同一端口上同时监听 HTTP/1.1 和 h2c，为了解决这个问题，需要在回落中指定 `alpn` 项（是 `fallbacks` 而不是 `xtlsSettings` 里面的），以尝试匹配 TLS ALPN 协商结果。
@@ -193,16 +197,16 @@ acme.sh --install-cert -d example.com --fullchain-file /etc/ssl/xray/cert.pem --
       {
           "name": "example.com",
           "path": "/vmessws",
-          "dest": 5000,
+          "dest": 5000, // Xray 其他入站协议
           "xver": 1
       },
       {
-          "dest": 5001,
+          "dest": 5001, // 默认伪装站，不分 HTTP 版本
           "xver": 1
       },
       {
           "name": "blog.example.com",
-          "dest": 5002,
+          "dest": 5002, // 其他网站，不分 HTTP 版本
           "xver": 1
       }
   ]
@@ -278,7 +282,7 @@ sudo chmod +x /usr/bin/caddy
         listener_wrappers {
             proxy_protocol
         }
-	protocol {
+        protocol {
             allow_h2c
         }
     }
@@ -286,7 +290,7 @@ sudo chmod +x /usr/bin/caddy
         listener_wrappers {
             proxy_protocol
         }
-	protocol {
+        protocol {
             allow_h2c
         }
     }

@@ -26,7 +26,7 @@ export default Vue.extend({
   },
   mounted() {
     this.enable = this.$themeConfig.themeChange;
-    this.text = this.$themeConfig.themeChangeText;
+    this.text = this.$themeLocaleConfig.themeChangeText;
   },
   methods: {
     toggleTheme() {

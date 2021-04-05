@@ -16,6 +16,8 @@ module.exports = {
     docsBranch: "main",
     editLinks: true,
     editLinkText: "帮助我们改善此页面！",
+    themeChange: true,
+    themeChangeText: "切换主题",
     nav: [
       { text: "首页", link: "/" },
       { text: "大史记", link: "/about/news" },
@@ -148,5 +150,6 @@ module.exports = {
           .options({
             name: `assets/img/[name].[hash:8].[ext]`
           })
-  }
+  },
+  postcss: { plugins: [require("autoprefixer")] }
 }

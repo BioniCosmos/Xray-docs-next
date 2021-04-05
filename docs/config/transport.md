@@ -96,7 +96,7 @@
 
 - `"none"` 表示不加密（默认值）
 - `"tls"` 表示使用 [TLS](https://en.wikipedia.org/wiki/base/transport_Layer_Security)。
-- `"xtls"` 表示使用 [XTLS](../features/xtls.md)。
+- `"xtls"` 表示使用 [XTLS](./features/xtls.md)。
 
 > `tlsSettings`: [TLSObject](#tlsobject)
 
@@ -104,13 +104,12 @@ TLS 配置。TLS 由 Golang 提供，通常情况下 TLS 协商的结果为使�
 
 > `xtlsSettings`: [XTLSObject](#tlsobject)
 
-XTLS 配置。XTLS 是 Xray 的原创黑科技, 也是使 Xray 性能一骑绝尘的核心动力。
-XTLS 与 TLS 有相同的安全性, 配置方式也和 TLS 一致. 点击此处查看 [XTLS 的技术细节剖析](../features/xtls.md)
+XTLS 配置。XTLS 是 Xray 的原创黑科技, 也是使 Xray 性能一骑绝尘的核心动力。 XTLS 与 TLS 有相同的安全性, 配置方式也和 TLS 一致.
+点击此处查看 [XTLS 的技术细节剖析](./features/xtls.md)
 
-::: danger
-TLS / XTLS 是目前最安全的传输加密方案, 且外部看来流量类型和正常上网具有一致性。
-启用 XTLS 并且配置合适的 XTLS 流控模式, 可以在保持和 TLS 相同的安全性的前提下, 性能达到数倍甚至十几倍的提升。
-当 `security` 的值从 `tls` 改为 `xtls` 时, 只需将 `tlsSettings` 修改成为 `xtlsSettings`
+::: tip
+TLS / XTLS 是目前最安全的传输加密方案, 且外部看来流量类型和正常上网具有一致性。 启用 XTLS 并且配置合适的 XTLS 流控模式, 可以在保持和 TLS 相同的安全性的前提下,
+性能达到数倍甚至十几倍的提升。 当 `security` 的值从 `tls` 改为 `xtls` 时, 只需将 `tlsSettings` 修改成为 `xtlsSettings`
 :::
 
 > `tcpSettings`: [TcpObject](./transports/tcp.md)
@@ -191,12 +190,11 @@ maxVersion 为可接受的最大 SSL/TLS 版本。
 
 CipherSuites 用于配置受支持的密码套件列表, 每个套件名称之间用:进行分隔.
 
-你可以在 [这里](https://golang.org/src/crypto/tls/cipher_suites.go#L500)或 [这里](https://golang.org/src/crypto/tls/cipher_suites.go#L44) 找到 golang 加密套件的名词和说明
+你可以在 [这里](https://golang.org/src/crypto/tls/cipher_suites.go#L500)或 [这里](https://golang.org/src/crypto/tls/cipher_suites.go#L44)
+找到 golang 加密套件的名词和说明
 
 ::: danger
-以上两项配置为非必要选项，正常情况下不影响安全性
-在未配置的情况下 golang 根据设备自动选择.
-若不熟悉, 请勿配置此选项, 填写不当引起的问题自行负责
+以上两项配置为非必要选项，正常情况下不影响安全性 在未配置的情况下 golang 根据设备自动选择. 若不熟悉, 请勿配置此选项, 填写不当引起的问题自行负责
 :::
 
 > `allowInsecure`: true | false
@@ -217,9 +215,19 @@ CipherSuites 用于配置受支持的密码套件列表, 每个套件名称之�
 
 > `enableSessionResumption`: true | false
 
-此参数的设置为 false 时, ClientHello 里没有 session_ticket 这个扩展。
-通常来讲 go 语言程序的 ClientHello 里并没有用到这个扩展, 因此建议保持默认值。
-默认值为 `false`。
+此参数的设置为 false 时, ClientHello 里没有 session_ticket 这个扩展。 通常来讲 go 语言程序的 ClientHello 里并没有用到这个扩展, 因此建议保持默认值。 默认值为 `false`。
+
+> `fingerprint` : "" | "chrome" | "firefox" | "safari" | "randomized"
+
+此参数用于配置指定 `TLS Client Hello` 的指纹。当其值为空时，表示不启用此功能。启用后，Xray 将通过 uTLS 库 **模拟** `TLS` 指纹，或随机生成。
+
+::: tip
+此功能仅 **模拟** `TLS Client Hello` 的指纹，行为、其他指纹与 Golang 相同。如果你希望更加完整地模拟浏览器 `TLS`
+指纹与行为，可以使用 [Browser Dialer](./transports/websocket.md#browser-dialer)。
+:::
+
+- `"chrome" | "firefox" | "safari"`: 模拟 Chrome / Firefox / Safari 的 TLS 指纹
+- `"randomized"`: 使用随机指纹
 
 > `fingerprint` : "" | "chrome" | "firefox" | "safari" | "randomized" 
 
@@ -238,7 +246,8 @@ CipherSuites 用于配置受支持的密码套件列表, 每个套件名称之�
 证书列表，其中每一项表示一个证书（建议 fullchain）。
 
 ::: tip
-如果要在 ssllibs 或者 myssl 获得 A/A+ 等级的评价, 请参考 [这里](https://github.com/XTLS/Xray-core/discussions/56#discussioncomment-215600).
+如果要在 ssllibs 或者 myssl 获得 A/A+ 等级的评价,
+请参考 [这里](https://github.com/XTLS/Xray-core/discussions/56#discussioncomment-215600).
 :::
 
 #### CertificateObject
@@ -317,7 +326,8 @@ ocspStapling 检查更新时间间隔。 单位：秒
 :::
 
 ::: tip TIP 2
-当有新的客户端请求时，假设所指定的 `serverName` 为 `"xray.com"`，Xray 会先从证书列表中寻找可用于 `"xray.com"` 的证书，如果没有找到，则使用任一 `usage` 为 `"issue"` 的证书签发一个适用于 `"xray.com"` 的证书，有效期为一小时。并将新的证书加入证书列表，以供后续使用。
+当有新的客户端请求时，假设所指定的 `serverName` 为 `"xray.com"`，Xray 会先从证书列表中寻找可用于 `"xray.com"` 的证书，如果没有找到，则使用任一 `usage`
+为 `"issue"` 的证书签发一个适用于 `"xray.com"` 的证书，有效期为一小时。并将新的证书加入证书列表，以供后续使用。
 :::
 
 ::: tip TIP 3
@@ -372,17 +382,29 @@ ocspStapling 检查更新时间间隔。 单位：秒
 - 仅适用于 Linux 系统。
 - 需要 CAP_NET_ADMIN 权限。
 
-> `tcpFastOpen`: true | false
+> `tcpFastOpen`: true | false | number
 
 是否启用 [TCP Fast Open](https://zh.wikipedia.org/wiki/TCP%E5%BF%AB%E9%80%9F%E6%89%93%E5%BC%80)。
 
-当其值为 `true` 时，强制开启 TFO；当其值为 `false` 时，强制关闭 TFO；当此项不存在时，使用系统默认设置。
-可用于 inbound/ountbound。
+当其值为 `true` 或`正整数`时，启用 TFO；当其值为 `false` 或`负数`时，强制关闭 TFO；当此项不存在或为 `0` 时，使用系统默认设置。 可用于 inbound/outbound。
 
 - 仅在以下版本（或更新版本）的操作系统中可用:
-  - Windows 10 (1604)
+
+  - Windows 10 (1607)
   - Mac OS 10.11 / iOS 9
-  - Linux 3.16：系统已默认开启，无需配置。
+  - Linux 3.16：需要通过内核参数 `net.ipv4.tcp_fastopen` 进行设定，此参数是一个 bitmap，`0x1` 代表客户端允许启用，`0x2` 代表服务器允许启用；默认值为 `0x1`，如果服务器要启用
+    TFO，请把此内核参数值设为 `0x3`。
+  - FreeBSD 10.3 (Server) / 12.0 (Client)：需要把内核参数 `net.inet.tcp.fastopen.server_enabled`
+    以及 `net.inet.tcp.fastopen.client_enabled` 设为 `1`。
+
+- 对于 Inbound，此处所设定的`正整数`代表 [待处理的 TFO 连接请求数上限](https://tools.ietf.org/html/rfc7413#section-5.1) ，**注意并非所有操作系统都支持在此设定**：
+
+  - Linux / FreeBSD：此处的设定的`正整数`值代表上限，可接受的最大值为 2147483647，为 `true` 时将取 `256`；注意在 Linux，`net.core.somaxconn`
+    会限制此值的上限，如果超过了 `somaxconn`，请同时提高 `somaxconn`。
+  - Mac OS：此处为 `true` 或`正整数`时，仅代表启用 TFO，上限需要通过内核参数 `net.inet.tcp.fastopen_backlog` 单独设定。
+  - Windows：此处为 `true` 或`正整数`时，仅代表启用 TFO。
+
+- 对于 Outbound，设定为 `true` 或`正整数`在任何操作系统都仅表示启用 TFO。
 
 > `tproxy`: "redirect" | "tproxy" | "off"
 
@@ -395,14 +417,17 @@ ocspStapling 检查更新时间间隔。 单位：秒
 透明代理需要 Root 或 `CAP\_NET\_ADMIN` 权限。
 
 ::: danger
-当 [Dokodemo-door](../inbounds/dokodemo.md) 中指定了 `followRedirect`为`true`，且 Sockopt 设置中的`tproxy` 为空时，Sockopt 设置中的`tproxy` 的值会被设为 `"redirect"`。
+当 [Dokodemo-door](./inbounds/dokodemo.md) 中指定了 `followRedirect`为`true`，且 Sockopt 设置中的`tproxy` 为空时，Sockopt
+设置中的`tproxy` 的值会被设为 `"redirect"`。
 :::
 
 > `domainStrategy`: "AsIs" | "UseIP" | "UseIPv4" | "UseIPv6"
 
-在之前的版本中，当 Xray 尝试使用域名建立系统连接时，域名的解析由系统完成，不受 Xray 控制。这导致了在 [非标准 Linux 环境中无法解析域名](https://github.com/v2ray/v2ray-core/issues/1909) 等问题。为此，Xray 1.3.1 为 Sockopt 引入了 Freedom 中的 domainStrategy，解决了此问题。
+在之前的版本中，当 Xray 尝试使用域名建立系统连接时，域名的解析由系统完成，不受 Xray
+控制。这导致了在 [非标准 Linux 环境中无法解析域名](https://github.com/v2ray/v2ray-core/issues/1909) 等问题。为此，Xray 1.3.1 为 Sockopt 引入了 Freedom
+中的 domainStrategy，解决了此问题。
 
-在目标地址为域名时, 配置相应的值, SysteDailer 的行为模式如下:
+在目标地址为域名时, 配置相应的值, SystemDialer 的行为模式如下:
 
 - `"AsIs"`: 通过系统 DNS 服务器解析获取 IP, 向此域名发出连接。
 - `"UseIP"`、`"UseIPv4"` 和 `"UseIPv6"`: 使用[内置 DNS 服务器](./dns.md)解析获取 IP 后, 直接向此 IP 发出连接。
@@ -410,6 +435,7 @@ ocspStapling 检查更新时间间隔。 单位：秒
 默认值为 `"AsIs"`。
 
 ::: danger
+
 启用了此功能后，不当的配置可能会导致死循环。
 
 一句话版本：连接到服务器，需要等待 DNS 查询结果；完成 DNS 查询，需要连接到服务器。
@@ -439,8 +465,7 @@ ocspStapling 检查更新时间间隔。 单位：秒
 
 > `dialerProxy`: ""
 
-一个出站代理的标识。当值不为空时，将使用指定的 outbound 发出连接。
-此选项可用于支持底层传输方式的链式转发。
+一个出站代理的标识。当值不为空时，将使用指定的 outbound 发出连接。 此选项可用于支持底层传输方式的链式转发。
 
 ::: danger
 此选项与 PorxySettingsObject.Tag 不兼容
@@ -455,4 +480,3 @@ ocspStapling 检查更新时间间隔。 单位：秒
 常见的反代软件（如 HAProxy、Nginx）都可以配置发送它，VLESS fallbacks xver 也可以发送它。
 
 填写 `true` 时，最底层 TCP 连接建立后，请求方必须先发送 PROXY protocol v1 或 v2，否则连接会被关闭。
-

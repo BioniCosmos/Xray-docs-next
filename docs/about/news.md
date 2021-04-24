@@ -4,6 +4,11 @@ sidebar: auto
 
 # 大史记
 
+## 2021.4.6
+
+- VuePress Next.
+- With Dark Mode.
+
 ## 2021.4.4
 
 - 本文档迎来的新的首页。
@@ -21,6 +26,7 @@ sidebar: auto
 
 ## 2021.3.25
 
+<!-- prettier-ignore -->
 没错还在变。 -_-
 
 ## 2021.3.15

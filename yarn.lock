@@ -62,12 +62,7 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@popperjs/core@2.6.0":
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.6.0.tgz#f022195afdfc942e088ee2101285a1d31c7d727f"
-  integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
-
-"@popperjs/core@^2.9.1":
+"@popperjs/core@^2.9.1", "@popperjs/core@^2.9.2":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
   integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
@@ -80,12 +75,12 @@
     "@types/connect" "*"
     "@types/node" "*"
 
-"@types/bootstrap@^5.0.11":
-  version "5.0.12"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.0.12.tgz#d044b6404bf3c89fc90df2822a86dfcd349db522"
-  integrity sha512-iowwPfp9Au6aoxS2hOgeRjXE25xdfLrTpmxzQSUs21z5qY3UZpmjSIWF4h8jPYPEXgZioIKLB2OSU8oWzzJAcQ==
+"@types/bootstrap@^5.0.17":
+  version "5.0.17"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.0.17.tgz#cb0a558babae77d8b1202bf5867b3ddc5d92c7ec"
+  integrity sha512-uQQQ3p+zw10VjZLvtCuKWI6QgVCYEnK/yHnno3gyEhikfQdiZexS2XPxjWRboGmX135o470GkmCta9eAgQMVLQ==
   dependencies:
-    "@popperjs/core" "2.6.0"
+    "@popperjs/core" "^2.9.2"
     "@types/jquery" "*"
 
 "@types/connect@*":
